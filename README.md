@@ -6,8 +6,8 @@ INSTALL
 -------
 http://userscripts.org/scripts/show/107166
 
-CHANGELOG
----------
+RELEASES
+--------
 2.1.7 - A more complete fix for the archive change. Also include a link to the directory files are located in at the top of a file listing.
 
 2.1.6 - A fix for a change at archive.org.
