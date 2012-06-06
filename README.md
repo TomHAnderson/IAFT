@@ -1,5 +1,5 @@
-Internet Archive File Types Greasemonkey Plugin 
-===============================================
+Internet Archive File Types
+===========================
 This helps you download media from archive.org. Archive.org is essentially a big file system, like a closet full of 5 1/4" disks in petabyte sized shoe boxes, indexed with string identifiers. Every identifier may have any number of files associated with it. Not all files associated with every identifier are listed on the detail page. This app solves that problem by giving direct links to every file for every identifier. IAFT also integrates with Lossless Legs and the etree sites db & bt and gives links to their details about the current identifier. 
 
 INSTALL
