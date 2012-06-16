@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.1.7
+// @version        2.1.8
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -941,7 +941,7 @@ function letsJQuery() {
                 });
 
                 // Close the IAFTLightbox
-                $('.close, .closeButton').live('click', function(event) {
+                $('.closeButton').live('click', function(event) {
                     IAFT.Lightbox.close();
                 });
             },
@@ -958,7 +958,7 @@ function letsJQuery() {
                 // Bind esc to close IAFT.Lightbox
                 $(document).bind('keypress', function(event) {
                     if (event.keyCode == 27) {
-                        $('.close').click();
+                        $('.closeButton').click();
                     }
                 });
 
@@ -1148,12 +1148,12 @@ function letsJQuery() {
                     alert('An unknown error occured.  We may be unable to reach db or something else went wrong.');
                 }
 
-                $('.close').click();
+                $('.closeButton').click();
                 IAFT.rebuildSection($(form).data('identifier'));
             },
             error: function() {
                 alert("There was a problem submitting this source information.  Please try again another time.");
-                $('.close').click();
+                $('.closeButton').click();
                 IAFT.rebuildSection($(form).data('identifier'));
             }
         });
