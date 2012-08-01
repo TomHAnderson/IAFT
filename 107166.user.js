@@ -95,7 +95,6 @@ GM_addStyle("\
             margin: 0px; \
             spacing: 0px; \
             padding: 0px; \
-            background-color: #385C74; \
             height: 16px; \
             padding-left: 15px; \
             padding-right: 15px; \
@@ -104,9 +103,35 @@ GM_addStyle("\
             margin-left: 10px; \
             border: solid; \
             border-width: 1px; \
-            border-color: #385C74; \
             border-top-left-radius: 10px; \
             border-top-right-radius: 10px; \
+            background-color: #aaaaaa; \
+            border-color: #aaaaaa; \
+        } \
+        \
+        section.iaft h1.software { \
+            background-color: #999966; \
+            border-color: #999966; \
+        } \
+        \
+        section.iaft h1.movies { \
+            background-color: #115500; \
+            border-color: #115500; \
+        } \
+        \
+        section.iaft h1.etree { \
+            background-color: #385C74; \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft h1.audio { \
+            background-color: #385C74; \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft h1.texts { \
+            background-color: #93092D; \
+            border-color: #93092D; \
         } \
         section.iaft ul { \
             border: solid; \
@@ -584,6 +609,8 @@ function letsJQuery() {
                             // Unwrap greasemonkey object
                             data = data.wrappedJSObject;
 
+                            xml = data;
+
                             if (!$(data).find('metadata').length) {
                                 $(node).find('button').html('Out of Order');
                                 return false;
@@ -679,9 +706,28 @@ function letsJQuery() {
                                         li = $('<li class="addToDb"><img align="top" height="48" src="http://db.etree.org/images/etreedb_upload.png"></li>');
                                         $(li).data('identifier', identifier);
                                         $(actions_ul).append(li);
+
+                                        $(xml).find('collection').each(function(index, node) {
+                                            $('section.iaft h1').addClass($(this).text());
+                                        });
+                                        $(xml).find('mediatype').each(function(index, node) {
+                                            $('section.iaft h1').addClass($(this).text());
+                                        });
+                                        $(xml).find('identifier').each(function(index, node) {
+                                            $('section.iaft h1').addClass($(this).text());
+                                        });
                                     }
                                 });
                             }
+                            $(xml).find('collection').each(function(index, node) {
+                                $('section.iaft h1').addClass($(this).text());
+                            });
+                            $(xml).find('mediatype').each(function(index, node) {
+                                $('section.iaft h1').addClass($(this).text());
+                            });
+                            $(xml).find('identifier').each(function(index, node) {
+                                $('section.iaft h1').addClass($(this).text());
+                            });
                         },
                         error: function() {
                             $(node).append('<li>Error fetching metadata.  This can happen (blame Yahoo!) '
