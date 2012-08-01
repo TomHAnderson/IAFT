@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+2.1.9 - Added dynamic colors based on the collection, mediatype, and identifier of the current identifier to better match archive.org color scheme.
+
 2.1.8 - Lightbox close button class name correction.  ESC works now.
 
 2.1.7 - A more complete fix for the archive change. Also include a link to the directory files are located in at the top of a file listing.
