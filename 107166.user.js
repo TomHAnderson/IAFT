@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.1.8
+// @version        2.1.9
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
