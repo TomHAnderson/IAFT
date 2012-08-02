@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.1.9
+// @version        2.2.0
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -133,6 +133,11 @@ GM_addStyle("\
             background-color: #93092D; \
             border-color: #93092D; \
         } \
+        \
+        section#actions.software, section#actions.texts, section#actions.movies { \
+            display: none; \
+        }\
+        \
         section.iaft ul { \
             border: solid; \
             border-width: 1px; \
@@ -709,12 +714,15 @@ function letsJQuery() {
 
                                         $(xml).find('collection').each(function(index, node) {
                                             $('section.iaft h1').addClass($(this).text());
+                                            $('section#actions.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('mediatype').each(function(index, node) {
                                             $('section.iaft h1').addClass($(this).text());
+                                            $('section#actions.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('identifier').each(function(index, node) {
                                             $('section.iaft h1').addClass($(this).text());
+                                            $('section#actions.iaft').addClass($(this).text());
                                         });
                                     }
                                 });

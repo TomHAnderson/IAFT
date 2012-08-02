@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+2.2.0 - Only show upload on audio collections.
+
 2.1.9 - Added dynamic colors based on the collection, mediatype, and identifier of the current identifier to better match archive.org color scheme.
 
 2.1.8 - Lightbox close button class name correction.  ESC works now.
