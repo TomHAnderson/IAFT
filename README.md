@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+2.2.2 - A bug fix for 2.2.1.  Actions (upload) no longer displayed.  This has been fixed.
+
 2.2.1 - Dynamic colors would 'spill' into other IAFT blocks in search.  This fix adds the identifier to the IAFT block classes so colors can be assigned to specific blocks instead of globally.
 
 2.2.0 - Only show upload on audio collections.

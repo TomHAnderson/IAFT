@@ -376,8 +376,8 @@ function string_to_slug(str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();
 
-  // remove accents, swap ρ for n, etc
-  var from = "ΰαδβθιλκμνοξςσφτωϊόϋρη·/_,:;";
+  // remove accents, swap Γ± for n, etc
+  var from = "Γ Γ΅Γ¤ΓΆΓ¨Γ©Γ«ΓªΓ¬Γ­Γ―Γ®Γ²Γ³Γ¶Γ΄ΓΉΓΊΓΌΓ»Γ±Γ§Β·/_,:;";
   var to   = "aaaaeeeeiiiioooouuuunc------";
   for (var i=0, l=from.length ; i<l ; i++) {
     str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
@@ -723,7 +723,7 @@ function letsJQuery() {
                                         section.id = 'actions';
                                         // Add identifier as class name
                                         $(section).addClass('iaft');
-                                        $(section).addClass(identifier_class);
+                                        $(section).addClass(identifier_slug);
 
                                         $(node).parent().parent().append(section);
 
@@ -1276,7 +1276,7 @@ function letsJQuery() {
         });
 
         $('#begPgSpcr').append('<button class="showAllFiletypes">Show All Filetypes</button>');
-
+        $('td.thumbCell').empty();
     } else {
         // Details Page
 
