@@ -371,6 +371,25 @@ parseUri.options = {
     }
 };
 
+// http://dense13.com/blog/2009/05/03/converting-string-to-slug-javascript/
+function string_to_slug(str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ס for n, etc
+  var from = "אבהגטיכךלםןמעףצפשתüûסח·/_,:;";
+  var to   = "aaaaeeeeiiiioooouuuunc------";
+  for (var i=0, l=from.length ; i<l ; i++) {
+    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+    .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+};
+
 /**
  * jQuery startup from http://joanpiedra.com/jquery/greasemonkey/
  */
@@ -409,7 +428,6 @@ unsafeWindow.handleIconError = function(node) {
 unsafeWindow.handleSmallIconError = function(node) {
     $(node).attr('src', 'http://db.etree.org/images/ico/filetype iaft.png');
 }
-
 
 // This is akin to $(function() {});
 function letsJQuery() {
@@ -451,6 +469,7 @@ function letsJQuery() {
             if (typeof identifier == 'undefined') {
                 identifier = $(node).attr('href').substr(9);
             }
+            var identifier_slug = string_to_slug(identifier);
             // Find the parent
             if (typeof parent == 'undefined') {
                 parent = $(node).parent();
@@ -460,7 +479,7 @@ function letsJQuery() {
                 attach = 'append';
             }
 
-            div = $('<div class="iaft"></div>');
+            div = $('<div class="iaft ' + identifier_slug + '"></div>');
             switch(attach) {
                 case 'after':
                     $(parent).after(div);
@@ -597,6 +616,8 @@ function letsJQuery() {
         // Get the archive xml from yahoo
         checkArchive: function(node, identifier) {
 
+            var identifier_slug = string_to_slug(identifier);
+
             // Fetch archive xml url
             $.ajax({
                 url: 'http://db.etree.org/rest/iaft.php?method=getIdentifierUrl&identifier=' + encodeURIComponent(identifier),
@@ -700,7 +721,10 @@ function letsJQuery() {
                                     success: function (data, textStatus, jqXHR) {
                                         section = document.createElement('section');
                                         section.id = 'actions';
-                                        section.className = 'iaft';
+                                        // Add identifier as class name
+                                        $(section).addClass('iaft');
+                                        $(section).addClass(identifier_class);
+
                                         $(node).parent().parent().append(section);
 
                                         $(section).append('<h1>Actions</h1>');
@@ -713,33 +737,33 @@ function letsJQuery() {
                                         $(actions_ul).append(li);
 
                                         $(xml).find('collection').each(function(index, node) {
-                                            $('section.iaft h1').addClass($(this).text());
-                                            $('section#actions.iaft').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('mediatype').each(function(index, node) {
-                                            $('section.iaft h1').addClass($(this).text());
-                                            $('section#actions.iaft').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('identifier').each(function(index, node) {
-                                            $('section.iaft h1').addClass($(this).text());
-                                            $('section#actions.iaft').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass(string_to_slug($(this).text()));
+                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass(string_to_slug($(this).text()));
                                         });
                                     }
                                 });
                             }
                             $(xml).find('collection').each(function(index, node) {
-                                $('section.iaft h1').addClass($(this).text());
+                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
                             });
                             $(xml).find('mediatype').each(function(index, node) {
-                                $('section.iaft h1').addClass($(this).text());
+                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
                             });
                             $(xml).find('identifier').each(function(index, node) {
-                                $('section.iaft h1').addClass($(this).text());
+                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass(string_to_slug($(this).text()));
                             });
                         },
                         error: function() {
                             $(node).append('<li>Error fetching metadata.  This can happen (blame Yahoo!) '
-                                           + 'if you make too many <br>requests in a row.  You may need to wait 10m or longer before '
+                                           + 'if you make too many <br>requests in a row.  You may need to wait 10 minutes or longer before '
                                            + 'requests will work again.</li>');
                         }
                     });
