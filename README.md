@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+2.2.5 - Other db sources (without an archive identifier) now open in the lightbox
+
 2.2.4 - Moved other sources to their own block.  Include sources on the archive and sources on db which are not on the archive. 
 
 2.2.3 - Added links to all other sources for the same date.  Mouse over the I icon to see db's source summary

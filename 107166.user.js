@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.2.4
+// @version        2.2.5
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -595,8 +595,8 @@ function letsJQuery() {
 
                         // db sources
                         $(data).find('db_sources').children().each(function() {
-                            li = $('<li class="archiveEntry"></li>');
-                            $(li).data('identifier', $(this).find('archive_identifier').text());
+                            li = $('<li class="dbEntry"></li>');
+                            $(li).data('shninfo_key', $(this).find('shninfo_key').text());
                             $(li).append('<img height="48" align="top" title="' +
                                 ($(this).find('comments').text().replace(/"/g,'&quot;')) +
                                 '" src="http://db.etree.org/etreedb.png" border="0">');
@@ -1189,6 +1189,12 @@ function letsJQuery() {
     $('.archiveEntry').live('click', function(event) {
         identifier = $(this).data('identifier');
         window.location = "http://www.archive.org/details/" + identifier;
+    });
+
+    // Show an archive entry detail (in a light box)
+    $('.dbEntry').live('click', function(event) {
+        shninfo_key = $(this).data('shninfo_key');
+        IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://db.etree.org/shn/' + shninfo_key + '"></iframe>'));
     });
 
     // Show the about screen
