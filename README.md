@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+2.2.4 - Moved other sources to their own block.  Include sources on the archive and sources on db which are not on the archive. 
+
 2.2.3 - Added links to all other sources for the same date.  Mouse over the I icon to see db's source summary
 
 2.2.2 - A bug fix for 2.2.1.  Actions (upload) no longer displayed.  This has been fixed.

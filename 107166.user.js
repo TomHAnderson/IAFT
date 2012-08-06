@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.2.3
+// @version        2.2.4
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -87,6 +87,7 @@ GM_addStyle("\
         } \
         section.iaft { \
             float:left; \
+            padding-bottom: 5px; \
         } \
         section.iaft h1 { \
             font-weight: bold; \
@@ -511,17 +512,26 @@ function letsJQuery() {
             section = document.createElement('section');
             section.id = 'fileTypes';
             section.className = 'iaft';
-            $(div).append(section);
-
             $(section).append('<h1>Internet Archive File Types</h1>');
-
             filetype_ul = document.createElement('ul');
             $(section).append(filetype_ul);
+            $(div).append(section);
+
 
             // Populate file types
             li = $('<li class="showFiletypes"><button class="iaft">Show</button></li>');
             $(li).data('identifier', identifier);
             $(filetype_ul).append(li);
+
+            // Section Other Sources
+            section = document.createElement('section');
+            section.id = 'other-sources';
+            section.className = 'iaft';
+            section.style.display = 'both';
+            $(section).append('<h1>Other Sources</h1>');
+            filetype_ul = document.createElement('ul');
+            $(section).append(filetype_ul);
+            $(div).append(section);
 
             // Populate references
             this.checkDb(references_ul, identifier);
@@ -532,6 +542,8 @@ function letsJQuery() {
         //  See if the source is on db.etree.org
         checkDb: function(node, identifier) {
             server = 'http://www.archive.org/details/' + identifier;
+
+            var identifier_slug = string_to_slug(identifier);
 
             // Add info IAFTLightbox icon
             li = $('<li class="archiveEntry_lightbox"></li>');
@@ -547,9 +559,19 @@ function letsJQuery() {
                 dataType: 'xml',
                 crossDomain: true,
                 success: function (data, textStatus, jqXHR) {
+
                     // Unwrap greasemonkey object
                     data = data.wrappedJSObject;
                     shninfo_key = $(data).find('shninfo_key').first().text();
+
+                    // Hide references if there are none
+                    if (!Number(shninfo_key)) $('section.iatf#references').hide();
+
+                    // db returns other sources, if any, for the same date.  Add these to references
+                    if (!$(data).find('db_sources').children().length && !$(data).find('ia_sources').children().length) {
+                        $('div.' + identifier_slug + ' #other-sources').remove();
+                    }
+
 
                     if (Number(shninfo_key) > 0) {
                         li = $('<li class="dbSource"></li>');
@@ -559,16 +581,30 @@ function letsJQuery() {
                         $(li).append('<div class="iaft_filecount">' + shninfo_key + '</div>');
                         $(node).append(li);
 
-                        // db returns other sources, if any, for the same date.  Add these to references
-                        $(data).find('other_sources').children().each(function() {
+                        // IA sources
+                        $(data).find('ia_sources').children().each(function() {
                             li = $('<li class="archiveEntry"></li>');
                             $(li).data('identifier', $(this).find('archive_identifier').text());
                             $(li).append('<img height="48" align="top" title="' +
                                 ($(this).find('comments').text().replace(/"/g,'&quot;')) +
                                 '" src="http://db.etree.org/images/ico/info.png" border="0">');
                             $(li).append('<div class="iaft_filecount">' + $(this).find('shninfo_key').text() + '</div>');
-                            $(node).append(li);
+                            //$(node).append(li);
+                            $('div.' + identifier_slug + ' #other-sources').find('ul').append(li);
                         });
+
+                        // db sources
+                        $(data).find('db_sources').children().each(function() {
+                            li = $('<li class="archiveEntry"></li>');
+                            $(li).data('identifier', $(this).find('archive_identifier').text());
+                            $(li).append('<img height="48" align="top" title="' +
+                                ($(this).find('comments').text().replace(/"/g,'&quot;')) +
+                                '" src="http://db.etree.org/etreedb.png" border="0">');
+                            $(li).append('<div class="iaft_filecount">' + $(this).find('shninfo_key').text() + '</div>');
+                            //$(node).append(li);
+                            $('div.' + identifier_slug + ' #other-sources').find('ul').append(li);
+                        });
+                        // asdf
 
                         // Check bt.etree.org
                         $.ajax({
@@ -588,9 +624,6 @@ function letsJQuery() {
                                         $(li).append('<div class="iaft_filecount">' + $(data).find('peers').text() + '</div>');
                                         $(node).append(li);
                                     }
-
-                                    // Hide references if there are none
-                                    $('section.iatf#references').hide();
                                 }
                             });
 
