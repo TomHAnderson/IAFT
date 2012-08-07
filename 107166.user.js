@@ -6,7 +6,7 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
-// @version        2.2.5
+// @version        3.0.0
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -110,27 +110,47 @@ GM_addStyle("\
             border-color: #aaaaaa; \
         } \
         \
-        section.iaft h1.software { \
+        section.iaft.software { \
+            border-color: #999966; \
+        } \
+        \
+        section.iaft.software h1 { \
             background-color: #999966; \
             border-color: #999966; \
         } \
         \
-        section.iaft h1.movies { \
+        section.iaft.movies { \
+            border-color: #115500; \
+        } \
+        \
+        section.iaft.movies h1 { \
             background-color: #115500; \
             border-color: #115500; \
         } \
         \
-        section.iaft h1.etree { \
+        section.iaft.etree { \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.etree h1 { \
             background-color: #385C74; \
             border-color: #385C74; \
         } \
         \
-        section.iaft h1.audio { \
+        section.iaft.audio { \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.audio h1 { \
             background-color: #385C74; \
             border-color: #385C74; \
         } \
         \
-        section.iaft h1.texts { \
+        section.iaft.texts { \
+            border-color: #93092D; \
+        } \
+        \
+        section.iaft.texts h1 { \
             background-color: #93092D; \
             border-color: #93092D; \
         } \
@@ -512,7 +532,7 @@ function letsJQuery() {
             section = document.createElement('section');
             section.id = 'fileTypes';
             section.className = 'iaft';
-            $(section).append('<h1>Internet Archive File Types</h1>');
+            $(section).append('<h1>Files</h1>');
             filetype_ul = document.createElement('ul');
             $(section).append(filetype_ul);
             $(div).append(section);
@@ -604,7 +624,6 @@ function letsJQuery() {
                             //$(node).append(li);
                             $('div.' + identifier_slug + ' #other-sources').find('ul').append(li);
                         });
-                        // asdf
 
                         // Check bt.etree.org
                         $.ajax({
@@ -781,28 +800,25 @@ function letsJQuery() {
                                         $(actions_ul).append(li);
 
                                         $(xml).find('collection').each(function(index, node) {
-                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
-                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('mediatype').each(function(index, node) {
-                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
-                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass($(this).text());
+                                            $('div.iaft.' + identifier_slug + ' section.iaft').addClass($(this).text());
                                         });
                                         $(xml).find('identifier').each(function(index, node) {
-                                            $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass(string_to_slug($(this).text()));
-                                            $('div.iaft.' + identifier_slug + ' section#actions.iaft').addClass(string_to_slug($(this).text()));
+                                            $('div.iaft.' + identifier_slug + ' section.iaft').addClass(string_to_slug($(this).text()));
                                         });
                                     }
                                 });
                             }
                             $(xml).find('collection').each(function(index, node) {
-                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
+                                $('div.iaft.' + identifier_slug + ' section.iaft').addClass($(this).text());
                             });
                             $(xml).find('mediatype').each(function(index, node) {
-                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass($(this).text());
+                                $('div.iaft.' + identifier_slug + ' section.iaft').addClass($(this).text());
                             });
                             $(xml).find('identifier').each(function(index, node) {
-                                $('div.iaft.' + identifier_slug + ' section.iaft h1').addClass(string_to_slug($(this).text()));
+                                $('div.iaft.' + identifier_slug + ' section.iaft').addClass(string_to_slug($(this).text()));
                             });
                         },
                         error: function() {
@@ -1197,6 +1213,13 @@ function letsJQuery() {
         IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://db.etree.org/shn/' + shninfo_key + '"></iframe>'));
     });
 
+    // Show the reviews
+    $('a#show-reviews').live('click', function() {
+        $('p.review').show();
+        $(this).hide();
+        return false;
+    });
+
     // Show the about screen
     $('.iaft_about').live('click', function(event) {
         IAFT.Lightbox.close();
@@ -1336,22 +1359,74 @@ function letsJQuery() {
     } else {
         // Details Page
 
+        document.documentElement.addEventListener('DOMAttrModified', function(e){
+          if (e.attrName === 'style') {
+            if ($(e.explicitOriginalTarget).attr('id')  == 'mwplayer_displayarea') {
+                // Fix sectoin widths
+                $('div#col1').css('margin-left', '0px');
+                $('div#midcol').removeAttr('style');
+                $('div#col1').css('width', $(e.explicitOriginalTarget).css('width'));
+                $('div#col1').width($('div#col1').width() + 33);
+
+                $('div#midcol').css('margin-left', $('div#col1').width() - 5);
+            }
+          }
+        }, false);
+
+        // Find identifier
+        uri = parseUri(document.location);
+        identifier = uri.path.substr(9);
+
+        // Make room for IAFT
         $('.breadcrumbs').after('<BR style="clear:both;">');
         $('.breadcrumbs').addClass('IAFTbreadcrumbs');
+
+        // Move AV player
+        if ($('#avplaycontainer').length) {
+            $('#avplaycontainer').detach().insertAfter('div#col1 div.box h1:first');
+        }
+
+        // Reformat reviews
+        $('<div id="reviews" class="box"><h1>Reviews</h1></div>').appendTo('div#midcol');
+        reviewHeader = $('h2[style="font-size:125%;"]').detach().appendTo('#reviews').css('font-size', '1em');
+        reviewWrite = $(reviewHeader).find('.rightmost').detach();
+        reviewStars = $(reviewHeader).find('span:last').detach().css('font-size', '1em');
+        $(reviewHeader).html(reviewStars);
+
+        $(reviewWrite).html('<a href="/write-review.php?identifier=' + identifier + '">Write a review</a>');
+        $(reviewHeader).append($(reviewWrite));
+
+        // Reformat individual reviews
+        $('p[style="margin:3px; padding:4px; border:1px solid #ccc;"]').addClass('review')
+            .detach()
+            .appendTo('#reviews')
+            .hide()
+            .first()
+            .before('<a href="#" id="show-reviews">Reviews are hidden.  Show Reviews</a>');
+
+        // Fix the ia footer
+        $('div#iafootdiv').detach().insertAfter('div#midcol');
+        $('p#iafoot').detach().appendTo('div#iafootdiv');
+
+        // Change details box header
+        $('span.x-archive-meta-title').parent().html('Details');
+
+        // Change streaming box header
+        $('div#col1 div.box h1:first').html('Stream');
+
+        // Remove crap
+        $('div#map').remove();
+        $('div#midcol div.box div p.content:first').remove();
+        $('p#iframeVidso').remove();
+        $('img#thumbnail').parent().remove();
         $('#begPgSpcr').remove();
 
+        // Run IAFT sections
+        $('.breadcrumbs').each(function(index, node) {
+            div = IAFT.buildSections(node, identifier, this, 'after');
+            $(div).addClass('iaftDetails');
+            $(div).find('li.showFiletypes').click();
+        });
 
-        $('p#iframeVidso').remove();
-
-        uri = parseUri(document.location);
-        if (uri.file != 'search.php') {
-            identifier = uri.path.substr(9);
-            $('.breadcrumbs').each(function(index, node) {
-                div = IAFT.buildSections(node, identifier, this, 'after');
-                $(div).addClass('iaftDetails');
-                $(div).find('li.showFiletypes').click();
-            });
-
-        }
     }
 }

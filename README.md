@@ -8,6 +8,8 @@ http://userscripts.org/scripts/show/107166
 
 RELEASES
 --------
+3.0.0 - This release reformats the archive's detail pages to be much easier to grok.  Ratings are moved out of details and hidden with a link to show them.  The media player is moved to the streaming box on the left and dynamically resized based on the content, so it works with movies too.  'Boxes' of information are retitled for brevity.
+
 2.2.5 - Other db sources (without an archive identifier) now open in the lightbox
 
 2.2.4 - Moved other sources to their own block.  Include sources on the archive and sources on db which are not on the archive. 
