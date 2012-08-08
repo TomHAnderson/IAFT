@@ -82,281 +82,281 @@ catch(err)
  * CSS
  */
 GM_addStyle("\
-        div.iaftDetails { \
-            float: left; \
-        } \
-        section.iaft { \
-            float:left; \
-            padding-bottom: 5px; \
-        } \
-        section.iaft h1 { \
-            font-weight: bold; \
-            font-size: 1.25em; \
-            color: white; \
-            margin: 0px; \
-            spacing: 0px; \
-            padding: 0px; \
-            height: 16px; \
-            padding-left: 15px; \
-            padding-right: 15px; \
-            padding-top: 5px; \
-            padding-bottom: 5px; \
-            margin-left: 10px; \
-            border: solid; \
-            border-width: 1px; \
-            border-top-left-radius: 10px; \
-            border-top-right-radius: 10px; \
-            background-color: #aaaaaa; \
-            border-color: #aaaaaa; \
-        } \
-        \
-        section.iaft.software { \
-            border-color: #999966; \
-        } \
-        \
-        section.iaft.software h1 { \
-            background-color: #999966; \
-            border-color: #999966; \
-        } \
-        \
-        section.iaft.movies { \
-            border-color: #115500; \
-        } \
-        \
-        section.iaft.movies h1 { \
-            background-color: #115500; \
-            border-color: #115500; \
-        } \
-        \
-        section.iaft.etree { \
-            border-color: #385C74; \
-        } \
-        \
-        section.iaft.etree h1 { \
-            background-color: #385C74; \
-            border-color: #385C74; \
-        } \
-        \
-        section.iaft.audio { \
-            border-color: #385C74; \
-        } \
-        \
-        section.iaft.audio h1 { \
-            background-color: #385C74; \
-            border-color: #385C74; \
-        } \
-        \
-        section.iaft.texts { \
-            border-color: #93092D; \
-        } \
-        \
-        section.iaft.texts h1 { \
-            background-color: #93092D; \
-            border-color: #93092D; \
-        } \
-        \
-        section#actions.software, section#actions.texts, section#actions.movies { \
-            display: none; \
-        }\
-        \
-        section.iaft ul { \
-            border: solid; \
-            border-width: 1px; \
-            border-color: #385C74; \
-            background-color: white; \
-            border-bottom-left-radius: 10px; \
-            border-bottom-right-radius: 10px; \
-            padding: 5px; \
-            margin: 0px; \
-            margin-left: 10px; \
-        } \
-        section.iaft ul li { \
-            display: inline; \
-            position: relative; \
-            padding: 5px; \
-            cursor: pointer; \
-        } \
-        \
-        button.iaft { \
-            font-weight: bold; \
-            width: 48px; \
-            height: 48px; \
-        } \
-        .IAFTLightboxMask { \
-            display: none; \
-            position: absolute; \
-            top: 0%; \
-            left: 0%; \
-            width: 100%; \
-            height: 100%; \
-            background-color: black; \
-            z-index:1001; \
-            -moz-opacity: 0.8; \
-            opacity:.80; \
-            filter: alpha(opacity=80); \
-        } \
-          \
-        .IAFTLightboxBody { \
-            display: none; \
-            position: absolute; \
-            top: 10%; \
-            left: 10%; \
-            width: 80%; \
-            height: 80%; \
-            padding: 16px; \
-            border: 3px solid #385C74; \
-            background-color: #F1FBFD; \
-            color: #385C74; \
-            -moz-border-radius: 10px; \
-            border-radius: 10px; \
-            z-index:1002; \
-            overflow: auto; \
-        } \
-        .betterTitle { \
-            font-size: 16pt; \
-            display: block; \
-            padding-bottom: 10px; \
-            text-decoration: none; \
-        } \
-        p.copy { \
-            font-size: 8pt; \
-        } \
-        .iaft_form {   \
-            background:#fff;   \
-            width:840;   \
-            border-radius: 10px; \
-            margin:5px auto;   \
-            padding:0;   \
-            overflow:auto;   \
-        }   \
-         \
-        dl.iaft_form { \
-            border: solid; \
-            border-color: #EF9B49; \
-            border-radius: 15px; \
-        } \
-         \
-        .iaft_form dt{   \
-            padding:0;   \
-            clear:both;   \
-            width:20%;   \
-            float:left;   \
-            text-align:right;   \
-            margin:5px 12px 5px 0;   \
-            font-weight: bold; \
-        }   \
-         \
-        .iaft_form dd{   \
-            padding:0;   \
-            float:left; \
-            text-align:left; \
-            width:68%;   \
-            margin:5px 2px 5px 0;   \
-        }   \
-         \
-        .iaft_form ul.errors li { \
-            margin: 0 0.15em; \
-            color: #ff0000; \
-            list-style-type:none;  \
-        } \
-         \
-        .iaft_form p{   \
-            padding:0;   \
-            margin:0;   \
-        }   \
-         \
-        .iaft_form p.description { \
-            font-style:italic;  \
-        } \
-         \
-        .iaft_form input, .iaft_form textarea{   \
-            margin:0 0 2px 0;   \
-            padding:0;   \
-        }   \
-        \
-        ul.IAFTfilelist { \
-            clear: both; \
-            font-family: courier; \
-            list-style: none; \
-        } \
-        \
-        ul.IAFTfilelist li { \
-            padding-top: 5px; \
-        } \
-        \
-        div.iaft_noicon { \
-            position: absolute; \
-            left: 14px; \
-            top: 34px; \
-            font-size: 14px; \
-            font-weight: bold; \
-            color: #8A8A8A; \
-        } \
-        \
-        div.iaft_filecount { \
-            border: solid; \
-            border-radius: 4px; \
-            border-color: #385C74; \
-            background-color: #385C74; \
-            opacity: 0.7; \
-            position: absolute; \
-            font-size: 12px; \
-            color: white; \
-            left: 10px; \
-            top: 5px; \
-        }\
+    div.iaftDetails { \
+        float: left; \
+    } \
+    section.iaft { \
+        float:left; \
+        padding-bottom: 8px; \
+    } \
+    section.iaft h1 { \
+        font-weight: bold; \
+        font-size: 1.25em; \
+        color: white; \
+        margin: 0px; \
+        spacing: 0px; \
+        padding: 0px; \
+        height: 16px; \
+        padding-left: 15px; \
+        padding-right: 15px; \
+        padding-top: 5px; \
+        padding-bottom: 5px; \
+        margin-left: 10px; \
+        border: solid; \
+        border-width: 1px; \
+        border-top-left-radius: 10px; \
+        border-top-right-radius: 10px; \
+        background-color: #aaaaaa; \
+        border-color: #aaaaaa; \
+    } \
+    \
+    section.iaft.software { \
+        border-color: #999966; \
+    } \
+    \
+    section.iaft.software h1 { \
+        background-color: #999966; \
+        border-color: #999966; \
+    } \
+    \
+    section.iaft.movies { \
+        border-color: #115500; \
+    } \
+    \
+    section.iaft.movies h1 { \
+        background-color: #115500; \
+        border-color: #115500; \
+    } \
+    \
+    section.iaft.etree { \
+        border-color: #385C74; \
+    } \
+    \
+    section.iaft.etree h1 { \
+        background-color: #385C74; \
+        border-color: #385C74; \
+    } \
+    \
+    section.iaft.audio { \
+        border-color: #385C74; \
+    } \
+    \
+    section.iaft.audio h1 { \
+        background-color: #385C74; \
+        border-color: #385C74; \
+    } \
+    \
+    section.iaft.texts { \
+        border-color: #93092D; \
+    } \
+    \
+    section.iaft.texts h1 { \
+        background-color: #93092D; \
+        border-color: #93092D; \
+    } \
+    \
+    section#actions.software, section#actions.texts, section#actions.movies { \
+        display: none; \
+    }\
+    \
+    section.iaft ul { \
+        border: solid; \
+        border-width: 1px; \
+        border-color: #385C74; \
+        background-color: white; \
+        border-bottom-left-radius: 10px; \
+        border-bottom-right-radius: 10px; \
+        padding: 5px; \
+        margin: 0px; \
+        margin-left: 10px; \
+    } \
+    section.iaft ul li { \
+        display: inline; \
+        position: relative; \
+        padding: 5px; \
+        cursor: pointer; \
+    } \
+    \
+    button.iaft { \
+        font-weight: bold; \
+        width: 48px; \
+        height: 48px; \
+    } \
+    .IAFTLightboxMask { \
+        display: none; \
+        position: absolute; \
+        top: 0%; \
+        left: 0%; \
+        width: 100%; \
+        height: 100%; \
+        background-color: black; \
+        z-index:1001; \
+        -moz-opacity: 0.8; \
+        opacity:.80; \
+        filter: alpha(opacity=80); \
+    } \
+      \
+    .IAFTLightboxBody { \
+        display: none; \
+        position: absolute; \
+        top: 10%; \
+        left: 10%; \
+        width: 80%; \
+        height: 80%; \
+        padding: 16px; \
+        border: 3px solid #385C74; \
+        background-color: #F1FBFD; \
+        color: #385C74; \
+        -moz-border-radius: 10px; \
+        border-radius: 10px; \
+        z-index:1002; \
+        overflow: auto; \
+    } \
+    .betterTitle { \
+        font-size: 16pt; \
+        display: block; \
+        padding-bottom: 10px; \
+        text-decoration: none; \
+    } \
+    p.copy { \
+        font-size: 8pt; \
+    } \
+    .iaft_form {   \
+        background:#fff;   \
+        width:840;   \
+        border-radius: 10px; \
+        margin:5px auto;   \
+        padding:0;   \
+        overflow:auto;   \
+    }   \
+     \
+    dl.iaft_form { \
+        border: solid; \
+        border-color: #EF9B49; \
+        border-radius: 15px; \
+    } \
+     \
+    .iaft_form dt{   \
+        padding:0;   \
+        clear:both;   \
+        width:20%;   \
+        float:left;   \
+        text-align:right;   \
+        margin:5px 12px 5px 0;   \
+        font-weight: bold; \
+    }   \
+     \
+    .iaft_form dd{   \
+        padding:0;   \
+        float:left; \
+        text-align:left; \
+        width:68%;   \
+        margin:5px 2px 5px 0;   \
+    }   \
+     \
+    .iaft_form ul.errors li { \
+        margin: 0 0.15em; \
+        color: #ff0000; \
+        list-style-type:none;  \
+    } \
+     \
+    .iaft_form p{   \
+        padding:0;   \
+        margin:0;   \
+    }   \
+     \
+    .iaft_form p.description { \
+        font-style:italic;  \
+    } \
+     \
+    .iaft_form input, .iaft_form textarea{   \
+        margin:0 0 2px 0;   \
+        padding:0;   \
+    }   \
+    \
+    ul.IAFTfilelist { \
+        clear: both; \
+        font-family: courier; \
+        list-style: none; \
+    } \
+    \
+    ul.IAFTfilelist li { \
+        padding-top: 5px; \
+    } \
+    \
+    div.iaft_noicon { \
+        position: absolute; \
+        left: 14px; \
+        top: 34px; \
+        font-size: 14px; \
+        font-weight: bold; \
+        color: #8A8A8A; \
+    } \
+    \
+    div.iaft_filecount { \
+        border: solid; \
+        border-radius: 4px; \
+        border-color: #385C74; \
+        background-color: #385C74; \
+        opacity: 0.7; \
+        position: absolute; \
+        font-size: 12px; \
+        color: white; \
+        left: 10px; \
+        top: 5px; \
+    }\
 \
-        ul.IAFTfilelist li { \
-            border: solid; \
-            border-radius: 5px; \
-            padding: 5px; \
-            margin: 5px; \
-            border-color: #385C74; \
-            font-size: 1.5em; \
-            background-color: #ffffff; \
-        } \
-        \
-        ul.IAFTfilelist li:hover { \
-            border-color: #92AED3; \
-        } \
-        \
-        ul.IAFTfilelist.li:hover table { \
-        } \
-        \
-        ul.IAFTfilelist li:hover a { \
-        } \
-        ul.IAFTfilelist li a { \
-            text-decoration: none; \
-        }\
-        tr.more { \
-            display: none; \
-        } \
-        a.more:hover { \
-            cursor: pointer; \
-        } \
-        a.closeButton { \
-            position:absolute; \
-            top: 40px; \
-            left: 10px; \
-            height:24px; \
-            width:24px; \
-            display: none; \
-            z-index:1050; \
-            background-image:url(http://db.etree.org/images/other/lightbox-close.png); \
-        } \
-        a.closeButton:hover { \
-            background-image:url(http://db.etree.org/images/other/lightbox-close-hover.png); \
-        } \
-        \
-        \
-        div.IAFTbreadcrumbs {\
-            padding-bottom: 10px;\
-        } \
-        div.IAFTbreadcrumbs b { \
-            display: block; \
-            font-size: 2em; \
-            padding-top: 10px; \
-        } \
+    ul.IAFTfilelist li { \
+        border: solid; \
+        border-radius: 5px; \
+        padding: 5px; \
+        margin: 5px; \
+        border-color: #385C74; \
+        font-size: 1.5em; \
+        background-color: #ffffff; \
+    } \
+    \
+    ul.IAFTfilelist li:hover { \
+        border-color: #92AED3; \
+    } \
+    \
+    ul.IAFTfilelist.li:hover table { \
+    } \
+    \
+    ul.IAFTfilelist li:hover a { \
+    } \
+    ul.IAFTfilelist li a { \
+        text-decoration: none; \
+    }\
+    tr.more { \
+        display: none; \
+    } \
+    a.more:hover { \
+        cursor: pointer; \
+    } \
+    a.closeButton { \
+        position:absolute; \
+        top: 40px; \
+        left: 10px; \
+        height:24px; \
+        width:24px; \
+        display: none; \
+        z-index:1050; \
+        background-image:url(http://db.etree.org/images/other/lightbox-close.png); \
+    } \
+    a.closeButton:hover { \
+        background-image:url(http://db.etree.org/images/other/lightbox-close-hover.png); \
+    } \
+    \
+    \
+    div.IAFTbreadcrumbs {\
+        padding-bottom: 10px;\
+    } \
+    div.IAFTbreadcrumbs b { \
+        display: block; \
+        font-size: 2em; \
+        padding-top: 10px; \
+    } \
 ");
 
 // parseUri 1.2.2
@@ -627,24 +627,24 @@ function letsJQuery() {
 
                         // Check bt.etree.org
                         $.ajax({
-                                url: 'http://db.etree.org/rest/iaft.php?method=getTorrentBySource&shninfo_key=' + shninfo_key,
-                                dataType: 'xml',
-                                crossDomain: true,
-                                success: function (data, textStatus, jqXHR) {
-                                    // Unwrap greasemonkey object
-                                    data = data.wrappedJSObject;
-                                    torrent_id = $(data).find('id').text();
-                                    if (torrent_id > 0)
-                                    {
-                                        li = $('<li class="btTorrent"></li>');
-                                        $(li).data('torrent_id', torrent_id);
-                                        $(li).append('<img align="top" height="48" src="http://db.etree.org/images/bt.png" '
-                                                       + 'title="bt.etree.org torrent id ' +  torrent_id + '">');
-                                        $(li).append('<div class="iaft_filecount">' + $(data).find('peers').text() + '</div>');
-                                        $(node).append(li);
-                                    }
+                            url: 'http://db.etree.org/rest/iaft.php?method=getTorrentBySource&shninfo_key=' + shninfo_key,
+                            dataType: 'xml',
+                            crossDomain: true,
+                            success: function (data, textStatus, jqXHR) {
+                                // Unwrap greasemonkey object
+                                data = data.wrappedJSObject;
+                                torrent_id = $(data).find('id').text();
+                                if (torrent_id > 0)
+                                {
+                                    li = $('<li class="btTorrent"></li>');
+                                    $(li).data('torrent_id', torrent_id);
+                                    $(li).append('<img align="top" height="48" src="http://db.etree.org/images/bt.png" '
+                                                   + 'title="bt.etree.org torrent id ' +  torrent_id + '">');
+                                    $(li).append('<div class="iaft_filecount">' + $(data).find('peers').text() + '</div>');
+                                    $(node).append(li);
                                 }
-                            });
+                            }
+                        });
 
                         // Check Lossless Legs
                         $.ajax({
@@ -1001,17 +1001,26 @@ function letsJQuery() {
                 content += '<li><img width="32" title="' + ext + '" onerror="handleSmallIconError(this);" src="http://db.etree.org/images/ico/filetype ' + ext + '.png">'
                          + '<a class="file" href="' + path + '/' + file.attr('name') + '">' + file.attr('name') + '</a>'
                          + '<table width="100%"><tr>';
+                content += '<td width="40%"><b>Creator:</b> ';
+                if (file.find('creator').text()) content += (file.find('creator').text());
+                content += '</td>';
+                content += '<td width="50%"><b>Title:</b> ';
+                if (file.find('title').text()) content += (file.find('title').text());
+                content += '</td>';
                 content += '<td width="10%"><b>Size:</b> ';
                 if (file.find('size').text()) content += this.bytesToSize(file.find('size').text());
-                content += '</td><td width="40%"><b>Last Update:</b> ';
-                if (file.find('mtime').text()) {
-                    date = new Date(file.find('mtime').text() * 1000);
-                    content += date.toString();
-                }
-                content += '</td><td width="40%"><b>MD5:</b> ';
-                if (file.find('md5').text()) content += file.find('md5').text();
+                content += '</td>';
+//                content += '<td width="40%"><b>Last Update:</b> ';
+//                if (file.find('mtime').text()) {
+//                    date = new Date(file.find('mtime').text() * 1000);
+//                    content += date.toString();
+//                }
+//                content += '</td>';
+//                content += '<td width="40%"><b>MD5:</b> ';
+//                if (file.find('md5').text()) content += file.find('md5').text();
+                content += '</td>';
                 rand = this.randomString();
-                content += '</td><td width="10%" align="right"><a class="more" href="#" id="' + rand + '">Details</a> ';
+                content += '<td width="10%" align="right"><a class="more" href="#" id="' + rand + '">Details</a> ';
                 content += '</td></tr>';
 
                 content  += '<tr id="' + rand + '_tr" class="more"><td>';
@@ -1201,13 +1210,13 @@ function letsJQuery() {
         IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://www.archive.org/details/' + identifier + '"></iframe>'));
     });
 
-    // Show an archive entry detail (in a light box)
+    // Redirect to an archive entry detail (no light box)
     $('.archiveEntry').live('click', function(event) {
         identifier = $(this).data('identifier');
         window.location = "http://www.archive.org/details/" + identifier;
     });
 
-    // Show an archive entry detail (in a light box)
+    // Show a db entry detail (in a light box)
     $('.dbEntry').live('click', function(event) {
         shninfo_key = $(this).data('shninfo_key');
         IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://db.etree.org/shn/' + shninfo_key + '"></iframe>'));
@@ -1250,9 +1259,8 @@ function letsJQuery() {
         ');
     });
 
-
     /**
-     * Submit code to db.etree.org
+     * Submit source to db.etree.org
      * @references actions.submit.to.db
      */
     $('form.iaft_form').live('submit', function(event) {
@@ -1356,9 +1364,13 @@ function letsJQuery() {
 
         $('#begPgSpcr').append('<button class="showAllFiletypes">Show All Filetypes</button>');
         $('td.thumbCell').empty();
+
     } else {
+
         // Details Page
 
+        // Watch dom events so the avplayer parent div can be resized when the avplayer
+        // resizes itself
         document.documentElement.addEventListener('DOMAttrModified', function(e){
           if (e.attrName === 'style') {
             if ($(e.explicitOriginalTarget).attr('id')  == 'mwplayer_displayarea') {
@@ -1368,7 +1380,7 @@ function letsJQuery() {
                 $('div#col1').css('width', $(e.explicitOriginalTarget).css('width'));
                 $('div#col1').width($('div#col1').width() + 33);
 
-                $('div#midcol').css('margin-left', $('div#col1').width() - 5);
+                $('div#midcol').css('margin-left', $('div#col1').width() - 9);
             }
           }
         }, false);
