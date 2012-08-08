@@ -14,73 +14,55 @@
  * Do auto updating first
  * see http://userscripts.org/scripts/review/20145
  */
-var IAFT_script_number = 107166;
-
 try
 {
-    function updateCheck(forced)
-    {
+    function updateCheck(forced) {
         // Checks once a day (24 h * 60 m * 60 s * 1000 ms)
-        if ((forced) || (parseInt(GM_getValue('SUC_last_update', '0')) + 86400000 <= (new Date().getTime())))
-        {
-            try
-            {
-                GM_xmlhttpRequest(
-                {
+        if ((forced) || (parseInt(GM_getValue('SUC_last_update', '0')) + 86400000 <= (new Date().getTime()))) {
+            try {
+                GM_xmlhttpRequest({
                     method: 'GET',
-                    url: 'http://userscripts.org/scripts/source/' + IAFT_script_number + '.meta.js?' + new Date().getTime(),
+                    url: 'http://userscripts.org/scripts/source/107166.meta.js?' + new Date().getTime(),
                     headers: {'Cache-Control': 'no-cache'},
-                    onload: function(resp)
-                    {
+                    onload: function(resp) {
                         var local_version, remote_version, rt, script_name;
 
                         rt=resp.responseText;
                         GM_setValue('SUC_last_update', new Date().getTime()+'');
                         remote_version=parseInt(/@uso:version\s*(.*?)\s*$/m.exec(rt)[1]);
                         local_version=parseInt(GM_getValue('SUC_current_version', '-1'));
-                        if(local_version!=-1)
-                        {
+                        if(local_version != -1) {
                             script_name = (/@name\s*(.*?)\s*$/m.exec(rt))[1];
                             GM_setValue('SUC_target_script_name', script_name);
                             if (remote_version > local_version)
                             {
                                 if(confirm('There is an update available for "'+script_name+'."\nWould you like to go to the install page now?'))
                                 {
-                                    GM_openInTab('http://userscripts.org/scripts/show/'+IAFT_script_number);
+                                    GM_openInTab('http://userscripts.org/scripts/show/107166');
                                     GM_setValue('SUC_current_version', remote_version);
                                 }
-                            }
-                            else if (forced)
+                            } else if (forced)
                                 alert('No update is available for "'+script_name+'."');
-                        }
-                        else
+                        } else
                             GM_setValue('SUC_current_version', remote_version+'');
                     }
                 });
             }
-            catch (err)
-            {
+            catch (err) {
                 if (forced)
                     alert('An error occurred while checking for updates:\n'+err);
             }
         }
     }
-    GM_registerMenuCommand(GM_getValue('SUC_target_script_name', '???') + ' - Manual Update Check', function()
-    {
+
+    GM_registerMenuCommand(GM_getValue('SUC_target_script_name', '???') + ' - Manual Update Check', function() {
         updateCheck(true);
     });
+
     updateCheck(false);
-}
-catch(err)
-{}
+} catch(err) {}
 
-/**
- * End auto updating
- */
-
-/**
- * CSS
- */
+// CSS
 GM_addStyle("\
     div.iaftDetails { \
         float: left; \
@@ -191,7 +173,6 @@ GM_addStyle("\
         height: 100%; \
         background-color: black; \
         z-index:1001; \
-        -moz-opacity: 0.8; \
         opacity:.80; \
         filter: alpha(opacity=80); \
     } \
@@ -207,7 +188,6 @@ GM_addStyle("\
         border: 3px solid #385C74; \
         background-color: #F1FBFD; \
         color: #385C74; \
-        -moz-border-radius: 10px; \
         border-radius: 10px; \
         z-index:1002; \
         overflow: auto; \
@@ -356,6 +336,50 @@ GM_addStyle("\
         display: block; \
         font-size: 2em; \
         padding-top: 10px; \
+    } \
+    \
+    #IAFT-top-nav { \
+        list-style: none; \
+        padding: 3px; \
+        background-color: lightgray; \
+        margin: 0px; \
+        margin-top: 3px; \
+        margin-bottom: 3px; \
+        border: solid; \
+        border-radius: 10px; \
+        border-width: 1px; \
+    } \
+    \
+    #IAFT-top-nav li { \
+        display: inline;  \
+        padding-right: 15px; \
+    } \
+    \
+    #IAFT-top-nav a { \
+    } \
+    \
+    #IAFT-secondary-nav { \
+        list-style: none; \
+        padding: 3px; \
+        margin: 0px; \
+        background-color: white; \
+        border: solid; \
+        border-radius: 10px; \
+        border-width: 1px; \
+    } \
+    \
+    #IAFT-secondary-nav li { \
+        display: inline;  \
+        padding-right: 15px; \
+    } \
+    \
+    #IAFT-secondary-nav a { \
+    } \
+    \
+    .top { \
+        border: solid; \
+        border-width: 1px; \
+        \
     } \
 ");
 
@@ -1001,24 +1025,19 @@ function letsJQuery() {
                 content += '<li><img width="32" title="' + ext + '" onerror="handleSmallIconError(this);" src="http://db.etree.org/images/ico/filetype ' + ext + '.png">'
                          + '<a class="file" href="' + path + '/' + file.attr('name') + '">' + file.attr('name') + '</a>'
                          + '<table width="100%"><tr>';
+                // Add Creator (should be same as identifier creator)
                 content += '<td width="40%"><b>Creator:</b> ';
                 if (file.find('creator').text()) content += (file.find('creator').text());
                 content += '</td>';
+                // Add track title
                 content += '<td width="50%"><b>Title:</b> ';
                 if (file.find('title').text()) content += (file.find('title').text());
                 content += '</td>';
+                // Add file size
                 content += '<td width="10%"><b>Size:</b> ';
                 if (file.find('size').text()) content += this.bytesToSize(file.find('size').text());
                 content += '</td>';
-//                content += '<td width="40%"><b>Last Update:</b> ';
-//                if (file.find('mtime').text()) {
-//                    date = new Date(file.find('mtime').text() * 1000);
-//                    content += date.toString();
-//                }
-//                content += '</td>';
-//                content += '<td width="40%"><b>MD5:</b> ';
-//                if (file.find('md5').text()) content += file.find('md5').text();
-                content += '</td>';
+                // Add detail link
                 rand = this.randomString();
                 content += '<td width="10%" align="right"><a class="more" href="#" id="' + rand + '">Details</a> ';
                 content += '</td></tr>';
@@ -1140,7 +1159,6 @@ function letsJQuery() {
         $('#' + $(this).attr('id') + '_tr').toggle();
         return false;
     });
-
 
     // Show details for all IAFT blocks
     $('.showAllFiletypes').live('click', function(event) {
@@ -1390,7 +1408,7 @@ function letsJQuery() {
         identifier = uri.path.substr(9);
 
         // Make room for IAFT
-        $('.breadcrumbs').after('<BR style="clear:both;">');
+        $('.breadcrumbs').after('<br style="clear:both;" />');
         $('.breadcrumbs').addClass('IAFTbreadcrumbs');
 
         // Move AV player
@@ -1426,12 +1444,39 @@ function letsJQuery() {
         // Change streaming box header
         $('div#col1 div.box h1:first').html('Stream');
 
+        // Format search
+        $('#searchform').parents('table').addClass('top');
+        $('<input type="submit" value="Search">').insertAfter('#gobutton');
+        $('#gobutton').remove();
+        $('#searchform b').remove();
+        $('a.level3Header.level3HeaderSearch').removeClass('level3HeaderSearch');
+        $('td.level3Header.level3HeaderLeft').removeClass('level3HeaderLeft');
+        $('input[name="search"]').attr('placeholder', 'enter search terms');
+        $('select[name="mediatype"]').before('Section');
+
+        // Format header
+        $('body table:first').remove();
+        $('#searchform').prepend('Search');
+        $('<ul id="IAFT-top-nav"><li>Menu</li><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li></ul><ul id="IAFT-secondary-nav" class="audio"><li>Sub-menu</li></ul>').insertBefore('.breadcrumbs');
+        $('td.level2Header a').each(function() {
+            $('#IAFT-secondary-nav').append($('<li />').append($(this)));
+        });
+        $('table.level2Header').remove();
+
+        // Replace upload button (see next comment)
+        $('a.linkbutton.backColor1').after('<a href="/create/">Upload</a>').remove();
+
         // Remove crap
         $('div#map').remove();
         $('div#midcol div.box div p.content:first').remove();
         $('p#iframeVidso').remove();
         $('img#thumbnail').parent().remove();
         $('#begPgSpcr').remove();
+        $('p').each(function() {
+            if (!$(this).html()) $(this).remove();
+        });
+        $('.urge').remove();
+        $('div.level3HeaderColorBar').remove();
 
         // Run IAFT sections
         $('.breadcrumbs').each(function(index, node) {
@@ -1439,6 +1484,5 @@ function letsJQuery() {
             $(div).addClass('iaftDetails');
             $(div).find('li.showFiletypes').click();
         });
-
     }
 }
