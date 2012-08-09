@@ -69,7 +69,13 @@ GM_addStyle("\
     } \
     section.iaft { \
         float:left; \
-        padding-bottom: 8px; \
+        margin: 8px; \
+        border: solid; \
+        border-width: 1px; \
+        border-color: #385C74; \
+        background-color: white; \
+        border-radius: 10px; \
+        padding-bottom: 3px; \
     } \
     section.iaft h1 { \
         font-weight: bold; \
@@ -83,7 +89,6 @@ GM_addStyle("\
         padding-right: 15px; \
         padding-top: 5px; \
         padding-bottom: 5px; \
-        margin-left: 10px; \
         border: solid; \
         border-width: 1px; \
         border-top-left-radius: 10px; \
@@ -142,15 +147,8 @@ GM_addStyle("\
     }\
     \
     section.iaft ul { \
-        border: solid; \
-        border-width: 1px; \
-        border-color: #385C74; \
-        background-color: white; \
-        border-bottom-left-radius: 10px; \
-        border-bottom-right-radius: 10px; \
-        padding: 5px; \
         margin: 0px; \
-        margin-left: 10px; \
+        padding: 3px; \
     } \
     section.iaft ul li { \
         display: inline; \
@@ -341,13 +339,9 @@ GM_addStyle("\
     #IAFT-top-nav { \
         list-style: none; \
         padding: 3px; \
-        background-color: lightgray; \
         margin: 0px; \
         margin-top: 3px; \
         margin-bottom: 3px; \
-        border: solid; \
-        border-radius: 10px; \
-        border-width: 1px; \
     } \
     \
     #IAFT-top-nav li { \
@@ -362,10 +356,6 @@ GM_addStyle("\
         list-style: none; \
         padding: 3px; \
         margin: 0px; \
-        background-color: white; \
-        border: solid; \
-        border-radius: 10px; \
-        border-width: 1px; \
     } \
     \
     #IAFT-secondary-nav li { \
@@ -1406,6 +1396,7 @@ function letsJQuery() {
         // Find identifier
         uri = parseUri(document.location);
         identifier = uri.path.substr(9);
+        var identifier_slug = string_to_slug(identifier);
 
         // Make room for IAFT
         $('.breadcrumbs').after('<br style="clear:both;" />');
@@ -1457,14 +1448,21 @@ function letsJQuery() {
         // Format header
         $('body table:first').remove();
         $('#searchform').prepend('Search');
-        $('<ul id="IAFT-top-nav"><li>Menu</li><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li></ul><ul id="IAFT-secondary-nav" class="audio"><li>Sub-menu</li></ul>').insertBefore('.breadcrumbs');
+        $('<ul id="IAFT-top-nav"><li>Menu</li><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li><li><a href="/create/">Upload</a></li></ul><ul id="IAFT-secondary-nav" class="audio"><li>Submenu</li></ul>').insertBefore('.breadcrumbs');
         $('td.level2Header a').each(function() {
             $('#IAFT-secondary-nav').append($('<li />').append($(this)));
         });
         $('table.level2Header').remove();
 
+        $('#searchform').parents('table').attr('id', 'header');
+        $('#header').append('<tr><td id="search"></td></tr>');
+        $('#header').append('<tr><td width="100%" colspan="4" id="nav"></td></tr>');
+        $('#header').append('<tr><td width="100%" colspan="4" id="subnav"></td></tr>');
+
+
+
         // Replace upload button (see next comment)
-        $('a.linkbutton.backColor1').after('<a href="/create/">Upload</a>').remove();
+        $('a.linkbutton.backColor1').remove();
 
         // Remove crap
         $('div#map').remove();
@@ -1484,5 +1482,15 @@ function letsJQuery() {
             $(div).addClass('iaftDetails');
             $(div).find('li.showFiletypes').click();
         });
+
+        $('div.iaft.' + identifier_slug).prepend('<section class="iaft" id="ia"><h1>Internet Archive</h1><ul id="menu"></ul></section>');
+
+        $('#IAFT-top-nav').detach().appendTo('#menu');
+        $('#IAFT-secondary-nav').detach().appendTo('#menu');
+        $('#searchform').detach().appendTo('#menu');
+
+        $('td.level3Header.level3HeaderUser2 b nobr a').detach().insertAfter('div#midcol div.box h1');
+
+        $('.breadcrumbs').detach().insertAfter('#ia');
     }
 }
