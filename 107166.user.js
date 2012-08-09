@@ -371,6 +371,14 @@ GM_addStyle("\
         border-width: 1px; \
         \
     } \
+    \
+    #user { \
+        float:right; \
+    } \
+    \
+    #user a { \
+        color: white; \
+    } \
 ");
 
 // parseUri 1.2.2
@@ -1441,14 +1449,14 @@ function letsJQuery() {
         $('#gobutton').remove();
         $('#searchform b').remove();
         $('a.level3Header.level3HeaderSearch').removeClass('level3HeaderSearch');
-        $('td.level3Header.level3HeaderLeft').removeClass('level3HeaderLeft');
+        $('td.level3Header.level3HeaderLeft').remove();
         $('input[name="search"]').attr('placeholder', 'enter search terms');
         $('select[name="mediatype"]').before('Section');
 
         // Format header
         $('body table:first').remove();
         $('#searchform').prepend('Search');
-        $('<ul id="IAFT-top-nav"><li>Menu</li><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li><li><a href="/create/">Upload</a></li></ul><ul id="IAFT-secondary-nav" class="audio"><li>Submenu</li></ul>').insertBefore('.breadcrumbs');
+        $('<ul id="IAFT-top-nav"><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li><li><a href="/create/">Upload</a></li></ul><ul id="IAFT-secondary-nav" class="audio"></ul>').insertBefore('.breadcrumbs');
         $('td.level2Header a').each(function() {
             $('#IAFT-secondary-nav').append($('<li />').append($(this)));
         });
@@ -1483,13 +1491,21 @@ function letsJQuery() {
             $(div).find('li.showFiletypes').click();
         });
 
-        $('div.iaft.' + identifier_slug).prepend('<section class="iaft" id="ia"><h1>Internet Archive</h1><ul id="menu"></ul></section>');
+        $('div.iaft.' + identifier_slug).prepend('<section class="iaft" id="ia"><h1 id="title">Internet Archive</h1><ul id="menu"></ul></section>');
 
         $('#IAFT-top-nav').detach().appendTo('#menu');
         $('#IAFT-secondary-nav').detach().appendTo('#menu');
         $('#searchform').detach().appendTo('#menu');
 
+        // Move edit link
         $('td.level3Header.level3HeaderUser2 b nobr a').detach().insertAfter('div#midcol div.box h1');
+
+        // Clean user bar
+        $('td.level3Header.level3HeaderUser2 b nobr').parents('td').remove();
+        div = $('<div id="user"></div>');
+        $('table.top tbody tr td:first').children().detach().prependTo($(div));
+        $(div).prependTo('#title');
+        $('table.top').remove();
 
         $('.breadcrumbs').detach().insertAfter('#ia');
     }
