@@ -10,6 +10,14 @@
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
 // @include        http://*.archive.org/details/*
+// @grant          GM_getValue
+// @grant          GM_xmlhttpRequest
+// @grant          GM_setValue
+// @grant          GM_getValue
+// @grant          GM_openInTab
+// @grant          GM_registerMenuCommand
+// @grant          GM_addStyle
+// @grant          GM_wait
 // @version        3.0.1
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
