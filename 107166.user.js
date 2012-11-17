@@ -2,6 +2,10 @@
 // @name           Internet Archive File Types
 // @namespace      www.archive.org
 // @description    A script to show you which file types are available for each identifier
+// @include        https://archive.org/search.php*
+// @include        https://archive.org/details/*
+// @include        https://*.archive.org/search.php*
+// @include        https://*.archive.org/details/*
 // @include        http://archive.org/search.php*
 // @include        http://archive.org/details/*
 // @include        http://*.archive.org/search.php*
