@@ -18,7 +18,7 @@
 // @grant          GM_registerMenuCommand
 // @grant          GM_addStyle
 // @grant          GM_wait
-// @version        3.0.1
+// @version        3.0.2
 // @author         Tom Anderson <tom.h.anderson@gmail.com>
 // ==/UserScript==
 
@@ -26,371 +26,349 @@
  * Do auto updating first
  * see http://userscripts.org/scripts/review/20145
  */
+var IAFT_script_number = 107166;
+
 try
 {
-    function updateCheck(forced) {
+    function updateCheck(forced)
+    {
         // Checks once a day (24 h * 60 m * 60 s * 1000 ms)
-        if ((forced) || (parseInt(GM_getValue('SUC_last_update', '0')) + 86400000 <= (new Date().getTime()))) {
-            try {
-                GM_xmlhttpRequest({
+        if ((forced) || (parseInt(GM_getValue('SUC_last_update', '0')) + 86400000 <= (new Date().getTime())))
+        {
+            try
+            {
+                GM_xmlhttpRequest(
+                {
                     method: 'GET',
-                    url: 'http://userscripts.org/scripts/source/107166.meta.js?' + new Date().getTime(),
+                    url: 'http://userscripts.org/scripts/source/' + IAFT_script_number + '.meta.js?' + new Date().getTime(),
                     headers: {'Cache-Control': 'no-cache'},
-                    onload: function(resp) {
+                    onload: function(resp)
+                    {
                         var local_version, remote_version, rt, script_name;
 
                         rt=resp.responseText;
                         GM_setValue('SUC_last_update', new Date().getTime()+'');
                         remote_version=parseInt(/@uso:version\s*(.*?)\s*$/m.exec(rt)[1]);
                         local_version=parseInt(GM_getValue('SUC_current_version', '-1'));
-                        if(local_version != -1) {
+                        if(local_version!=-1)
+                        {
                             script_name = (/@name\s*(.*?)\s*$/m.exec(rt))[1];
                             GM_setValue('SUC_target_script_name', script_name);
                             if (remote_version > local_version)
                             {
                                 if(confirm('There is an update available for "'+script_name+'."\nWould you like to go to the install page now?'))
                                 {
-                                    GM_openInTab('http://userscripts.org/scripts/show/107166');
+                                    GM_openInTab('http://userscripts.org/scripts/show/'+IAFT_script_number);
                                     GM_setValue('SUC_current_version', remote_version);
                                 }
-                            } else if (forced)
+                            }
+                            else if (forced)
                                 alert('No update is available for "'+script_name+'."');
-                        } else
+                        }
+                        else
                             GM_setValue('SUC_current_version', remote_version+'');
                     }
                 });
             }
-            catch (err) {
+            catch (err)
+            {
                 if (forced)
                     alert('An error occurred while checking for updates:\n'+err);
             }
         }
     }
-
-    GM_registerMenuCommand(GM_getValue('SUC_target_script_name', '???') + ' - Manual Update Check', function() {
+    GM_registerMenuCommand(GM_getValue('SUC_target_script_name', '???') + ' - Manual Update Check', function()
+    {
         updateCheck(true);
     });
-
     updateCheck(false);
-} catch(err) {}
+}
+catch(err)
+{}
 
-// CSS
+/**
+ * End auto updating
+ */
+
+/**
+ * CSS
+ */
 GM_addStyle("\
-    div.iaftDetails { \
-        float: left; \
-    } \
-    section.iaft { \
-        float:left; \
-        margin: 8px; \
-        border: solid; \
-        border-width: 1px; \
-        border-color: #385C74; \
-        background-color: white; \
-        border-radius: 10px; \
-        padding-bottom: 3px; \
-    } \
-    section.iaft h1 { \
-        font-weight: bold; \
-        font-size: 1.25em; \
-        color: white; \
-        margin: 0px; \
-        spacing: 0px; \
-        padding: 0px; \
-        height: 16px; \
-        padding-left: 15px; \
-        padding-right: 15px; \
-        padding-top: 5px; \
-        padding-bottom: 5px; \
-        border: solid; \
-        border-width: 1px; \
-        border-top-left-radius: 10px; \
-        border-top-right-radius: 10px; \
-        background-color: #aaaaaa; \
-        border-color: #aaaaaa; \
-    } \
-    \
-    section.iaft.software { \
-        border-color: #999966; \
-    } \
-    \
-    section.iaft.software h1 { \
-        background-color: #999966; \
-        border-color: #999966; \
-    } \
-    \
-    section.iaft.movies { \
-        border-color: #115500; \
-    } \
-    \
-    section.iaft.movies h1 { \
-        background-color: #115500; \
-        border-color: #115500; \
-    } \
-    \
-    section.iaft.etree { \
-        border-color: #385C74; \
-    } \
-    \
-    section.iaft.etree h1 { \
-        background-color: #385C74; \
-        border-color: #385C74; \
-    } \
-    \
-    section.iaft.audio { \
-        border-color: #385C74; \
-    } \
-    \
-    section.iaft.audio h1 { \
-        background-color: #385C74; \
-        border-color: #385C74; \
-    } \
-    \
-    section.iaft.texts { \
-        border-color: #93092D; \
-    } \
-    \
-    section.iaft.texts h1 { \
-        background-color: #93092D; \
-        border-color: #93092D; \
-    } \
-    \
-    section#actions.software, section#actions.texts, section#actions.movies { \
-        display: none; \
-    }\
-    \
-    section.iaft ul { \
-        margin: 0px; \
-        padding: 3px; \
-    } \
-    section.iaft ul li { \
-        display: inline; \
-        position: relative; \
-        padding: 5px; \
-        cursor: pointer; \
-    } \
-    \
-    button.iaft { \
-        font-weight: bold; \
-        width: 48px; \
-        height: 48px; \
-    } \
-    .IAFTLightboxMask { \
-        display: none; \
-        position: absolute; \
-        top: 0%; \
-        left: 0%; \
-        width: 100%; \
-        height: 100%; \
-        background-color: black; \
-        z-index:1001; \
-        opacity:.80; \
-        filter: alpha(opacity=80); \
-    } \
-      \
-    .IAFTLightboxBody { \
-        display: none; \
-        position: absolute; \
-        top: 10%; \
-        left: 10%; \
-        width: 80%; \
-        height: 80%; \
-        padding: 16px; \
-        border: 3px solid #385C74; \
-        background-color: #F1FBFD; \
-        color: #385C74; \
-        border-radius: 10px; \
-        z-index:1002; \
-        overflow: auto; \
-    } \
-    .betterTitle { \
-        font-size: 16pt; \
-        display: block; \
-        padding-bottom: 10px; \
-        text-decoration: none; \
-    } \
-    p.copy { \
-        font-size: 8pt; \
-    } \
-    .iaft_form {   \
-        background:#fff;   \
-        width:840;   \
-        border-radius: 10px; \
-        margin:5px auto;   \
-        padding:0;   \
-        overflow:auto;   \
-    }   \
-     \
-    dl.iaft_form { \
-        border: solid; \
-        border-color: #EF9B49; \
-        border-radius: 15px; \
-    } \
-     \
-    .iaft_form dt{   \
-        padding:0;   \
-        clear:both;   \
-        width:20%;   \
-        float:left;   \
-        text-align:right;   \
-        margin:5px 12px 5px 0;   \
-        font-weight: bold; \
-    }   \
-     \
-    .iaft_form dd{   \
-        padding:0;   \
-        float:left; \
-        text-align:left; \
-        width:68%;   \
-        margin:5px 2px 5px 0;   \
-    }   \
-     \
-    .iaft_form ul.errors li { \
-        margin: 0 0.15em; \
-        color: #ff0000; \
-        list-style-type:none;  \
-    } \
-     \
-    .iaft_form p{   \
-        padding:0;   \
-        margin:0;   \
-    }   \
-     \
-    .iaft_form p.description { \
-        font-style:italic;  \
-    } \
-     \
-    .iaft_form input, .iaft_form textarea{   \
-        margin:0 0 2px 0;   \
-        padding:0;   \
-    }   \
-    \
-    ul.IAFTfilelist { \
-        clear: both; \
-        font-family: courier; \
-        list-style: none; \
-    } \
-    \
-    ul.IAFTfilelist li { \
-        padding-top: 5px; \
-    } \
-    \
-    div.iaft_noicon { \
-        position: absolute; \
-        left: 14px; \
-        top: 34px; \
-        font-size: 14px; \
-        font-weight: bold; \
-        color: #8A8A8A; \
-    } \
-    \
-    div.iaft_filecount { \
-        border: solid; \
-        border-radius: 4px; \
-        border-color: #385C74; \
-        background-color: #385C74; \
-        opacity: 0.7; \
-        position: absolute; \
-        font-size: 12px; \
-        color: white; \
-        left: 10px; \
-        top: 5px; \
-    }\
-\
-    ul.IAFTfilelist li { \
-        border: solid; \
-        border-radius: 5px; \
-        padding: 5px; \
-        margin: 5px; \
-        border-color: #385C74; \
-        font-size: 1.5em; \
-        background-color: #ffffff; \
-    } \
-    \
-    ul.IAFTfilelist li:hover { \
-        border-color: #92AED3; \
-    } \
-    \
-    ul.IAFTfilelist.li:hover table { \
-    } \
-    \
-    ul.IAFTfilelist li:hover a { \
-    } \
-    ul.IAFTfilelist li a { \
-        text-decoration: none; \
-    }\
-    tr.more { \
-        display: none; \
-    } \
-    a.more:hover { \
-        cursor: pointer; \
-    } \
-    a.closeButton { \
-        position:absolute; \
-        top: 40px; \
-        left: 10px; \
-        height:24px; \
-        width:24px; \
-        display: none; \
-        z-index:1050; \
-        background-image:url(http://db.etree.org/images/other/lightbox-close.png); \
-    } \
-    a.closeButton:hover { \
-        background-image:url(http://db.etree.org/images/other/lightbox-close-hover.png); \
-    } \
-    \
-    \
-    div.IAFTbreadcrumbs {\
-        padding-bottom: 10px;\
-    } \
-    div.IAFTbreadcrumbs b { \
-        display: block; \
-        font-size: 2em; \
-        padding-top: 10px; \
-    } \
-    \
-    #IAFT-top-nav { \
-        list-style: none; \
-        padding: 3px; \
-        margin: 0px; \
-        margin-top: 3px; \
-        margin-bottom: 3px; \
-    } \
-    \
-    #IAFT-top-nav li { \
-        display: inline;  \
-        padding-right: 15px; \
-    } \
-    \
-    #IAFT-top-nav a { \
-    } \
-    \
-    #IAFT-secondary-nav { \
-        list-style: none; \
-        padding: 3px; \
-        margin: 0px; \
-    } \
-    \
-    #IAFT-secondary-nav li { \
-        display: inline;  \
-        padding-right: 15px; \
-    } \
-    \
-    #IAFT-secondary-nav a { \
-    } \
-    \
-    .top { \
-        border: solid; \
-        border-width: 1px; \
+        div.iaftDetails { \
+            float: left; \
+        } \
+        section.iaft { \
+            float:left; \
+            padding-bottom: 5px; \
+        } \
+        section.iaft h1 { \
+            font-weight: bold; \
+            font-size: 1.25em; \
+            color: white; \
+            margin: 0px; \
+            spacing: 0px; \
+            padding: 0px; \
+            height: 16px; \
+            padding-left: 15px; \
+            padding-right: 15px; \
+            padding-top: 5px; \
+            padding-bottom: 5px; \
+            margin-left: 10px; \
+            border: solid; \
+            border-width: 1px; \
+            border-top-left-radius: 10px; \
+            border-top-right-radius: 10px; \
+            background-color: #aaaaaa; \
+            border-color: #aaaaaa; \
+        } \
         \
-    } \
-    \
-    #user { \
-        float:right; \
-    } \
-    \
-    #user a { \
-        color: white; \
-    } \
+        section.iaft.software { \
+            border-color: #999966; \
+        } \
+        \
+        section.iaft.software h1 { \
+            background-color: #999966; \
+            border-color: #999966; \
+        } \
+        \
+        section.iaft.movies { \
+            border-color: #115500; \
+        } \
+        \
+        section.iaft.movies h1 { \
+            background-color: #115500; \
+            border-color: #115500; \
+        } \
+        \
+        section.iaft.etree { \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.etree h1 { \
+            background-color: #385C74; \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.audio { \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.audio h1 { \
+            background-color: #385C74; \
+            border-color: #385C74; \
+        } \
+        \
+        section.iaft.texts { \
+            border-color: #93092D; \
+        } \
+        \
+        section.iaft.texts h1 { \
+            background-color: #93092D; \
+            border-color: #93092D; \
+        } \
+        \
+        section#actions.software, section#actions.texts, section#actions.movies { \
+            display: none; \
+        }\
+        \
+        section.iaft ul { \
+            border: solid; \
+            border-width: 1px; \
+            border-color: #385C74; \
+            background-color: white; \
+            border-bottom-left-radius: 10px; \
+            border-bottom-right-radius: 10px; \
+            padding: 5px; \
+            margin: 0px; \
+            margin-left: 10px; \
+        } \
+        section.iaft ul li { \
+            display: inline; \
+            position: relative; \
+            padding: 5px; \
+            cursor: pointer; \
+        } \
+        \
+        button.iaft { \
+            font-weight: bold; \
+            width: 48px; \
+            height: 48px; \
+        } \
+        .IAFTLightboxMask { \
+            display: none; \
+            position: absolute; \
+            top: 0%; \
+            left: 0%; \
+            width: 100%; \
+            height: 100%; \
+            background-color: black; \
+            z-index:1001; \
+            -moz-opacity: 0.8; \
+            opacity:.80; \
+            filter: alpha(opacity=80); \
+        } \
+          \
+        .IAFTLightboxBody { \
+            display: none; \
+            position: absolute; \
+            top: 10%; \
+            left: 10%; \
+            width: 80%; \
+            height: 80%; \
+            padding: 16px; \
+            border: 3px solid #385C74; \
+            background-color: #F1FBFD; \
+            color: #385C74; \
+            -moz-border-radius: 10px; \
+            border-radius: 10px; \
+            z-index:1002; \
+            overflow: auto; \
+        } \
+        .betterTitle { \
+            font-size: 16pt; \
+            display: block; \
+            padding-bottom: 10px; \
+            text-decoration: none; \
+        } \
+        p.copy { \
+            font-size: 8pt; \
+        } \
+        .iaft_form {   \
+            background:#fff;   \
+            width:840;   \
+            border-radius: 10px; \
+            margin:5px auto;   \
+            padding:0;   \
+            overflow:auto;   \
+        }   \
+         \
+        dl.iaft_form { \
+            border: solid; \
+            border-color: #EF9B49; \
+            border-radius: 15px; \
+        } \
+         \
+        .iaft_form dt{   \
+            padding:0;   \
+            clear:both;   \
+            width:20%;   \
+            float:left;   \
+            text-align:right;   \
+            margin:5px 12px 5px 0;   \
+            font-weight: bold; \
+        }   \
+         \
+        .iaft_form dd{   \
+            padding:0;   \
+            float:left; \
+            text-align:left; \
+            width:68%;   \
+            margin:5px 2px 5px 0;   \
+        }   \
+         \
+        .iaft_form ul.errors li { \
+            margin: 0 0.15em; \
+            color: #ff0000; \
+            list-style-type:none;  \
+        } \
+         \
+        .iaft_form p{   \
+            padding:0;   \
+            margin:0;   \
+        }   \
+         \
+        .iaft_form p.description { \
+            font-style:italic;  \
+        } \
+         \
+        .iaft_form input, .iaft_form textarea{   \
+            margin:0 0 2px 0;   \
+            padding:0;   \
+        }   \
+        \
+        ul.IAFTfilelist { \
+            clear: both; \
+            font-family: courier; \
+            list-style: none; \
+        } \
+        \
+        ul.IAFTfilelist li { \
+            padding-top: 5px; \
+        } \
+        \
+        div.iaft_noicon { \
+            position: absolute; \
+            left: 14px; \
+            top: 34px; \
+            font-size: 14px; \
+            font-weight: bold; \
+            color: #8A8A8A; \
+        } \
+        \
+        div.iaft_filecount { \
+            border: solid; \
+            border-radius: 4px; \
+            border-color: #385C74; \
+            background-color: #385C74; \
+            opacity: 0.7; \
+            position: absolute; \
+            font-size: 12px; \
+            color: white; \
+            left: 10px; \
+            top: 5px; \
+        }\
+\
+        ul.IAFTfilelist li { \
+            border: solid; \
+            border-radius: 5px; \
+            padding: 5px; \
+            margin: 5px; \
+            border-color: #385C74; \
+            font-size: 1.5em; \
+            background-color: #ffffff; \
+        } \
+        \
+        ul.IAFTfilelist li:hover { \
+            border-color: #92AED3; \
+        } \
+        \
+        ul.IAFTfilelist.li:hover table { \
+        } \
+        \
+        ul.IAFTfilelist li:hover a { \
+        } \
+        ul.IAFTfilelist li a { \
+            text-decoration: none; \
+        }\
+        tr.more { \
+            display: none; \
+        } \
+        a.more:hover { \
+            cursor: pointer; \
+        } \
+        a.closeButton { \
+            position:absolute; \
+            top: 40px; \
+            left: 10px; \
+            height:24px; \
+            width:24px; \
+            display: none; \
+            z-index:1050; \
+            background-image:url(http://db.etree.org/images/other/lightbox-close.png); \
+        } \
+        a.closeButton:hover { \
+            background-image:url(http://db.etree.org/images/other/lightbox-close-hover.png); \
+        } \
+        \
+        \
+        div.IAFTbreadcrumbs {\
+            padding-bottom: 10px;\
+        } \
+        div.IAFTbreadcrumbs b { \
+            display: block; \
+            font-size: 2em; \
+            padding-top: 10px; \
+        } \
 ");
 
 // parseUri 1.2.2
@@ -661,24 +639,24 @@ function letsJQuery() {
 
                         // Check bt.etree.org
                         $.ajax({
-                            url: 'http://db.etree.org/rest/iaft.php?method=getTorrentBySource&shninfo_key=' + shninfo_key,
-                            dataType: 'xml',
-                            crossDomain: true,
-                            success: function (data, textStatus, jqXHR) {
-                                // Unwrap greasemonkey object
-                                data = data.wrappedJSObject;
-                                torrent_id = $(data).find('id').text();
-                                if (torrent_id > 0)
-                                {
-                                    li = $('<li class="btTorrent"></li>');
-                                    $(li).data('torrent_id', torrent_id);
-                                    $(li).append('<img align="top" height="48" src="http://db.etree.org/images/bt.png" '
-                                                   + 'title="bt.etree.org torrent id ' +  torrent_id + '">');
-                                    $(li).append('<div class="iaft_filecount">' + $(data).find('peers').text() + '</div>');
-                                    $(node).append(li);
+                                url: 'http://db.etree.org/rest/iaft.php?method=getTorrentBySource&shninfo_key=' + shninfo_key,
+                                dataType: 'xml',
+                                crossDomain: true,
+                                success: function (data, textStatus, jqXHR) {
+                                    // Unwrap greasemonkey object
+                                    data = data.wrappedJSObject;
+                                    torrent_id = $(data).find('id').text();
+                                    if (torrent_id > 0)
+                                    {
+                                        li = $('<li class="btTorrent"></li>');
+                                        $(li).data('torrent_id', torrent_id);
+                                        $(li).append('<img align="top" height="48" src="http://db.etree.org/images/bt.png" '
+                                                       + 'title="bt.etree.org torrent id ' +  torrent_id + '">');
+                                        $(li).append('<div class="iaft_filecount">' + $(data).find('peers').text() + '</div>');
+                                        $(node).append(li);
+                                    }
                                 }
-                            }
-                        });
+                            });
 
                         // Check Lossless Legs
                         $.ajax({
@@ -1035,21 +1013,17 @@ function letsJQuery() {
                 content += '<li><img width="32" title="' + ext + '" onerror="handleSmallIconError(this);" src="http://db.etree.org/images/ico/filetype ' + ext + '.png">'
                          + '<a class="file" href="' + path + '/' + file.attr('name') + '">' + file.attr('name') + '</a>'
                          + '<table width="100%"><tr>';
-                // Add Creator (should be same as identifier creator)
-                content += '<td width="40%"><b>Creator:</b> ';
-                if (file.find('creator').text()) content += (file.find('creator').text());
-                content += '</td>';
-                // Add track title
-                content += '<td width="50%"><b>Title:</b> ';
-                if (file.find('title').text()) content += (file.find('title').text());
-                content += '</td>';
-                // Add file size
                 content += '<td width="10%"><b>Size:</b> ';
                 if (file.find('size').text()) content += this.bytesToSize(file.find('size').text());
-                content += '</td>';
-                // Add detail link
+                content += '</td><td width="40%"><b>Last Update:</b> ';
+                if (file.find('mtime').text()) {
+                    date = new Date(file.find('mtime').text() * 1000);
+                    content += date.toString();
+                }
+                content += '</td><td width="40%"><b>MD5:</b> ';
+                if (file.find('md5').text()) content += file.find('md5').text();
                 rand = this.randomString();
-                content += '<td width="10%" align="right"><a class="more" href="#" id="' + rand + '">Details</a> ';
+                content += '</td><td width="10%" align="right"><a class="more" href="#" id="' + rand + '">Details</a> ';
                 content += '</td></tr>';
 
                 content  += '<tr id="' + rand + '_tr" class="more"><td>';
@@ -1170,6 +1144,7 @@ function letsJQuery() {
         return false;
     });
 
+
     // Show details for all IAFT blocks
     $('.showAllFiletypes').live('click', function(event) {
         $(this).attr('disabled', 'disabled');
@@ -1238,13 +1213,13 @@ function letsJQuery() {
         IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://www.archive.org/details/' + identifier + '"></iframe>'));
     });
 
-    // Redirect to an archive entry detail (no light box)
+    // Show an archive entry detail (in a light box)
     $('.archiveEntry').live('click', function(event) {
         identifier = $(this).data('identifier');
         window.location = "http://www.archive.org/details/" + identifier;
     });
 
-    // Show a db entry detail (in a light box)
+    // Show an archive entry detail (in a light box)
     $('.dbEntry').live('click', function(event) {
         shninfo_key = $(this).data('shninfo_key');
         IAFT.Lightbox.show($('<iframe style="border: none;" width="100%" height="100%" src="http://db.etree.org/shn/' + shninfo_key + '"></iframe>'));
@@ -1287,8 +1262,9 @@ function letsJQuery() {
         ');
     });
 
+
     /**
-     * Submit source to db.etree.org
+     * Submit code to db.etree.org
      * @references actions.submit.to.db
      */
     $('form.iaft_form').live('submit', function(event) {
@@ -1392,13 +1368,9 @@ function letsJQuery() {
 
         $('#begPgSpcr').append('<button class="showAllFiletypes">Show All Filetypes</button>');
         $('td.thumbCell').empty();
-
     } else {
-
         // Details Page
 
-        // Watch dom events so the avplayer parent div can be resized when the avplayer
-        // resizes itself
         document.documentElement.addEventListener('DOMAttrModified', function(e){
           if (e.attrName === 'style') {
             if ($(e.explicitOriginalTarget).attr('id')  == 'mwplayer_displayarea') {
@@ -1408,7 +1380,7 @@ function letsJQuery() {
                 $('div#col1').css('width', $(e.explicitOriginalTarget).css('width'));
                 $('div#col1').width($('div#col1').width() + 33);
 
-                $('div#midcol').css('margin-left', $('div#col1').width() - 9);
+                $('div#midcol').css('margin-left', $('div#col1').width() - 5);
             }
           }
         }, false);
@@ -1416,10 +1388,9 @@ function letsJQuery() {
         // Find identifier
         uri = parseUri(document.location);
         identifier = uri.path.substr(9);
-        var identifier_slug = string_to_slug(identifier);
 
         // Make room for IAFT
-        $('.breadcrumbs').after('<br style="clear:both;" />');
+        $('.breadcrumbs').after('<BR style="clear:both;">');
         $('.breadcrumbs').addClass('IAFTbreadcrumbs');
 
         // Move AV player
@@ -1455,46 +1426,12 @@ function letsJQuery() {
         // Change streaming box header
         $('div#col1 div.box h1:first').html('Stream');
 
-        // Format search
-        $('#searchform').parents('table').addClass('top');
-        $('<input type="submit" value="Search">').insertAfter('#gobutton');
-        $('#gobutton').remove();
-        $('#searchform b').remove();
-        $('a.level3Header.level3HeaderSearch').removeClass('level3HeaderSearch');
-        $('td.level3Header.level3HeaderLeft').remove();
-        $('input[name="search"]').attr('placeholder', 'enter search terms');
-        $('select[name="mediatype"]').before('Section');
-
-        // Format header
-        $('body table:first').remove();
-        $('#searchform').prepend('Search');
-        $('<ul id="IAFT-top-nav"><li><a href="/">Home</a></li><li><a href="/web/web.php">Web</a></li><li><a href="/details/movies">Moving Images</a></li><li><a href="/details/texts">Texts</a></li><li><a href="/details/audio">Audio</a></li><li><a href="/details/software">Software</a></li><li><a href="/account/login.php">Patron Info</a></li><li><a href="/about/">About IA</a></li><li><a href="/projects/">Projects</a></li><li><a href="/create/">Upload</a></li></ul><ul id="IAFT-secondary-nav" class="audio"></ul>').insertBefore('.breadcrumbs');
-        $('td.level2Header a').each(function() {
-            $('#IAFT-secondary-nav').append($('<li />').append($(this)));
-        });
-        $('table.level2Header').remove();
-
-        $('#searchform').parents('table').attr('id', 'header');
-        $('#header').append('<tr><td id="search"></td></tr>');
-        $('#header').append('<tr><td width="100%" colspan="4" id="nav"></td></tr>');
-        $('#header').append('<tr><td width="100%" colspan="4" id="subnav"></td></tr>');
-
-
-
-        // Replace upload button (see next comment)
-        $('a.linkbutton.backColor1').remove();
-
         // Remove crap
         $('div#map').remove();
         $('div#midcol div.box div p.content:first').remove();
         $('p#iframeVidso').remove();
         $('img#thumbnail').parent().remove();
         $('#begPgSpcr').remove();
-        $('p').each(function() {
-            if (!$(this).html()) $(this).remove();
-        });
-        $('.urge').remove();
-        $('div.level3HeaderColorBar').remove();
 
         // Run IAFT sections
         $('.breadcrumbs').each(function(index, node) {
@@ -1503,22 +1440,5 @@ function letsJQuery() {
             $(div).find('li.showFiletypes').click();
         });
 
-        $('div.iaft.' + identifier_slug).prepend('<section class="iaft" id="ia"><h1 id="title">Internet Archive</h1><ul id="menu"></ul></section>');
-
-        $('#IAFT-top-nav').detach().appendTo('#menu');
-        $('#IAFT-secondary-nav').detach().appendTo('#menu');
-        $('#searchform').detach().appendTo('#menu');
-
-        // Move edit link
-        $('td.level3Header.level3HeaderUser2 b nobr a').detach().insertAfter('div#midcol div.box h1');
-
-        // Clean user bar
-        $('td.level3Header.level3HeaderUser2 b nobr').parents('td').remove();
-        div = $('<div id="user"></div>');
-        $('table.top tbody tr td:first').children().detach().prependTo($(div));
-        $(div).prependTo('#title');
-        $('table.top').remove();
-
-        $('.breadcrumbs').detach().insertAfter('#ia');
     }
 }
