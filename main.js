@@ -620,7 +620,7 @@ function letsJQuery() {
                             if (!$(data).find('metadata').length) {
 								console.log(data);
 								console.log($(data).find('metadata'));
-								alert('unable to find metadata: ';
+								alert('unable to find metadata');
 
                                 $(node).find('button').html('Out of Order');
                                 return false;
