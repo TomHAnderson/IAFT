@@ -87,5 +87,5 @@ catch(err)
 {}
 
 var script = document.createElement("script");
-script.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js";
+script.src = "https://raw.githubusercontent.com/TomHAnderson/IAFT/master/main.js";
 document.getElementsByTagName("head")[0].appendChild(script);
