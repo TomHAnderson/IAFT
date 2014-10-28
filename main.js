@@ -498,7 +498,7 @@ function letsJQuery() {
                 success: function (data, textStatus, jqXHR) {
 
                     // Unwrap greasemonkey object
-                    data = data.wrappedJSObject;
+                    data = data;
                     shninfo_key = $(data).find('shninfo_key').first().text();
 
                     // Hide references if there are none
@@ -549,7 +549,7 @@ function letsJQuery() {
                                 crossDomain: true,
                                 success: function (data, textStatus, jqXHR) {
                                     // Unwrap greasemonkey object
-                                    data = data.wrappedJSObject;
+                                    data = data;
                                     torrent_id = $(data).find('id').text();
                                     if (torrent_id > 0)
                                     {
@@ -570,7 +570,7 @@ function letsJQuery() {
                             crossDomain: true,
                             success: function (data, textStatus, jqXHR) {
 
-                                data = data.wrappedJSObject;
+                                data = data;
 
                                 torrent_id = $(data).find('id').text();
                                 if (torrent_id)
@@ -613,7 +613,7 @@ function letsJQuery() {
                         dataType: 'xml',
                         success: function (data, textStatus, jqXHR) {
                             // Unwrap greasemonkey object
-                            data = data.wrappedJSObject;
+                            data = data;
 
                             xml = data;
 
@@ -1079,7 +1079,7 @@ function letsJQuery() {
             dataType: 'xml',
             success: function (data, textStatus, jqXHR) {
                 // Unwrap greasemonkey object
-                data = data.wrappedJSObject;
+                data = data;
 
                 if (!$(data).find('metadata').length) {
                     alert("Unable to fetch data from IA.  This is likely due to invalid syntax in their xml. "
@@ -1215,7 +1215,7 @@ function letsJQuery() {
             },
             success: function(data, textStatus, jxQHR) {
                 // Unwrap greasemonkey object
-                data = data.wrappedJSObject;
+                data = data;
                 error = $(data).find('error').text();
                 if (error) {
                     alert(error);
