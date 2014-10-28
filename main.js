@@ -612,9 +612,6 @@ function letsJQuery() {
                         crossDomain: true,
                         dataType: 'xml',
                         success: function (data, textStatus, jqXHR) {
-                            // Unwrap greasemonkey object
-                            data = data;
-
                             xml = data;
 
                             if (!$(data).find('metadata').length) {
